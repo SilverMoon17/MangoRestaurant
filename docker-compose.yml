@@ -88,3 +88,10 @@ services:
     environment:
       <<: *app-default-env
       ServiceUrls__IdentityServer:
+
+  app.gatewaysolution:
+    restart: unless-stopped
+    image: mango.gatewaysolution
+    build: Mango.GatewaySolution
+    environment:
+      <<: *app-default-env
