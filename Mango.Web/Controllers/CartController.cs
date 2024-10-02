@@ -27,9 +27,7 @@ public class CartController : Controller
     
     public async Task<IActionResult> RemoveItem(int cartDetailsId)
     {
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-        var response = await _cartService.RemoveFromCartAsync<ResponseDto>(cartDetailsId, accessToken);
+        var response = await _cartService.RemoveFromCartAsync<ResponseDto>(cartDetailsId);
 
         if (response is not null && response.IsSuccess)
         {
@@ -51,8 +49,7 @@ public class CartController : Controller
 
         try
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var response = await _cartService.Checkout<ResponseDto>(cartDto.CartHeader, accessToken);
+            var response = await _cartService.Checkout<ResponseDto>(cartDto.CartHeader);
 
             if (!response.IsSuccess)
             {
@@ -78,9 +75,7 @@ public class CartController : Controller
     public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
     {
         var userId = User.Claims.Where(u => u.Type == "sub").FirstOrDefault()?.Value;
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-        var response = await _cartService.ApplyCoupon<ResponseDto>(cartDto, accessToken);
+        var response = await _cartService.ApplyCoupon<ResponseDto>(cartDto);
 
         if (response is not null && response.Result is not null && response.IsSuccess)
         {
@@ -94,9 +89,7 @@ public class CartController : Controller
     public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
     {
         var userId = User.Claims.Where(u => u.Type == "sub").FirstOrDefault()?.Value;
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-        var response = await _cartService.RemoveCoupon<ResponseDto>(cartDto.CartHeader.UserId, accessToken);
+        var response = await _cartService.RemoveCoupon<ResponseDto>(cartDto.CartHeader.UserId);
 
         if (response is not null && response.IsSuccess)
         {
@@ -108,9 +101,7 @@ public class CartController : Controller
     private async Task<CartDto> LoadCartDtoBasedOnLoggedInUserAsync()
     {
         var userId = User.Claims.Where(u => u.Type == "sub").FirstOrDefault()?.Value;
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-        var response = await _cartService.GetCartByUserIdAsync<ResponseDto>(userId, accessToken);
+        var response = await _cartService.GetCartByUserIdAsync<ResponseDto>(userId);
 
         CartDto cartDto = new CartDto();
         if (response is not null && response.Result is not null && response.IsSuccess)
@@ -127,7 +118,7 @@ public class CartController : Controller
             
             if (!cartDto.CartHeader.CouponCode.IsNullOrEmpty())
             {
-                var couponRequest = await _couponService.GetCouponAsync<ResponseDto>(cartDto.CartHeader.CouponCode,accessToken);
+                var couponRequest = await _couponService.GetCouponAsync<ResponseDto>(cartDto.CartHeader.CouponCode);
                 if (couponRequest is not null && couponRequest.Result is not null && couponRequest.IsSuccess)
                 {
                     var coupon = JsonConvert.DeserializeObject<CouponDto>(couponRequest.Result.ToString());

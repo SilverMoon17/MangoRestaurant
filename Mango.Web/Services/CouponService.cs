@@ -11,13 +11,12 @@ public class CouponService : BaseService, ICouponService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<T> GetCouponAsync<T>(string couponCode, string token = null)
+    public async Task<T> GetCouponAsync<T>(string couponCode)
     {
         return await this.SendAsync<T>(new ApiRequest()
         {
             ApiType = SD.ApiType.GET,
-            Url = SD.CouponAPIBase + $"/api/coupon/{couponCode}",
-            AccessToken = token
+            Url = SD.CouponAPIBase + $"/api/coupon/{couponCode}"
         });
     }
 }

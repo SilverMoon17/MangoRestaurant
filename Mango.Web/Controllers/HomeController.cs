@@ -25,10 +25,10 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
+        
         List<ProductDto> list = new List<ProductDto>();
         
-        var response = await _productService.GetAllProductsAsync<ResponseDto>(accessToken);
+        var response = await _productService.GetAllProductsAsync<ResponseDto>();
 
         if (response is not null && response.IsSuccess)
         {
@@ -49,7 +49,6 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
     
-    [Authorize]
     public async Task<IActionResult> Login()
     {
         return RedirectToAction(nameof(Index));
@@ -59,10 +58,9 @@ public class HomeController : Controller
         return SignOut("Cookies", "oidc");
     }
 
-    [Authorize]
     public async Task<IActionResult> Details(int productId)
     {
-        var response = await _productService.GetProductByIdAsync<ResponseDto>(productId, "");
+        var response = await _productService.GetProductByIdAsync<ResponseDto>(productId);
 
         if (response is not null && response.IsSuccess)
         {
@@ -73,7 +71,6 @@ public class HomeController : Controller
         return NotFound();
     }
     
-    [Authorize]
     [HttpPost]
     [ActionName("Details")]
     public async Task<IActionResult> DetailsPost(ProductDto productDto)
@@ -92,7 +89,7 @@ public class HomeController : Controller
             Count = productDto.Count
         };
 
-        var resp = await _productService.GetProductByIdAsync<ResponseDto>(productDto.ProductId, "");
+        var resp = await _productService.GetProductByIdAsync<ResponseDto>(productDto.ProductId);
 
         if (resp is not null && resp.IsSuccess)
         {
@@ -103,8 +100,8 @@ public class HomeController : Controller
         cartDetailsDtos.Add(cartDetailsDto);
         cartDto.CartDetails = cartDetailsDtos;
 
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
-        var addToCartResp = await _cartService.AddToCartAsync<ResponseDto>(cartDto, accessToken);
+        
+        var addToCartResp = await _cartService.AddToCartAsync<ResponseDto>(cartDto);
 
         if (addToCartResp is not null && addToCartResp.IsSuccess)
         {

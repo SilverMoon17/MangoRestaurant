@@ -4,11 +4,11 @@ namespace Mango.Web.Services.IServices;
 
 public interface ICartService
 {
-    Task<T> GetCartByUserIdAsync<T>(string userId, string token = null);
-    Task<T> AddToCartAsync<T>(CartDto cartDto, string token = null);
-    Task<T> UpdateCartAsync<T>(CartDto cartDto, string token = null);
-    Task<T> ApplyCoupon<T>(CartDto cartDto, string token = null);
-    Task<T> RemoveCoupon<T>(string userId, string token = null);
-    Task<T> RemoveFromCartAsync<T>(int cartId, string token = null);
-    Task<T> Checkout<T>(CartHeaderDto cartHeaderDto, string token = null);
+    Task<T> GetCartByUserIdAsync<T>(string userId);
+    Task<T> AddToCartAsync<T>(CartDto cartDto);
+    Task<T> UpdateCartAsync<T>(CartDto cartDto);
+    Task<T> ApplyCoupon<T>(CartDto cartDto);
+    Task<T> RemoveCoupon<T>(string userId);
+    Task<T> RemoveFromCartAsync<T>(int cartId);
+    Task<T> Checkout<T>(CartHeaderDto cartHeaderDto);
 }

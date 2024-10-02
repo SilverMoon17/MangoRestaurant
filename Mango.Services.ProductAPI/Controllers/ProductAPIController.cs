@@ -71,7 +71,6 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<object> Update([FromBody] ProductDto productDto)
         {
             var response = new ResponseDto();
@@ -90,7 +89,6 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public async Task<object> Delete(int id)
         {

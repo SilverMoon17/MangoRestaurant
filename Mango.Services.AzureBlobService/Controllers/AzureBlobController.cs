@@ -18,7 +18,6 @@ public class AzureBlobController : ControllerBase
     }
     
     [HttpPost("Upload")]
-    [Authorize]
     public async Task<ResponseDto> Upload(IFormFile file)
     {
         var response = new ResponseDto();
@@ -45,7 +44,6 @@ public class AzureBlobController : ControllerBase
     }
     
     [HttpDelete("Delete")]
-    [Authorize]
     public async Task<ResponseDto> Delete([FromBody]string imageUrl)
     {
         var response = new ResponseDto();
